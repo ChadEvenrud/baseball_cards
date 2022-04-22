@@ -1,26 +1,40 @@
 import React, { Component } from "react";
-import Card from "../Components/Card";
+import CardList from "../Components/CardList";
+import SearchBar from "../Components/SearchBar";
 
 class App extends Component {
   constructor() {
     super();
-    this.obj = {
+    this.state = {
       users: [],
-      test: "Chad Test",
+      search: "",
     };
   }
 
   //Fetch data for MLB players
   getData = async function () {
-    const data = await fetch("url");
-    return data.json();
+    try {
+      const fetchData = await fetch(
+        "https://jsonplaceholder.typicode.com/users"
+      );
+      const data = await fetchData.json();
+      this.setState({ users: data });
+    } catch (error) {
+      alert("Strike 3! " + error);
+    }
   };
 
+  componentDidMount() {
+    setTimeout(() => {
+      this.getData();
+    }, 3000);
+  }
+
   render() {
+    console.log(this.state.users);
     return (
       <div>
-        <h1>Hello</h1>
-        <Card playersName="Chad Evenrud" />
+        <SearchBar />
       </div>
     );
   }
